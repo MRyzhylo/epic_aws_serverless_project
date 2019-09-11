@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dynamodb": "^1.2.0"
+    "aws-sdk": "^2.526.0",
+    "dynamodb": "^1.2.0",
+    "uuid": "^3.3.3"
   }
 }

@@ -26,8 +26,8 @@ functions:
     handler: handler.createPost
     events: 
     - http: 
-      path: /post
-      method: post
+        path: /post
+        method: post
 
 resources:
   Resources:
