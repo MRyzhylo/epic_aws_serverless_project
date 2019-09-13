@@ -28,12 +28,14 @@ functions:
     - http: 
         path: /post
         method: post
+        cors: true
   getAllPosts:
     handler: handler.getAllPosts
     events: 
     - http: 
         path: /posts
         method: get
+        cors: true
 
 resources:
   Resources:
