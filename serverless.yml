@@ -19,7 +19,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: 
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:customs.settings.POSTS_TABLE}"
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.POSTS_TABLE}"
 
 functions:
   createPost:
@@ -34,13 +34,15 @@ resources:
     PostsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        AtributeDefinitions: 
-          - AtributeName: "id"
-            AtributeType: "S"
+        AttributeDefinitions: 
+          - 
+            AttributeName: "id"
+            AttributeType: "S"
         KeySchema:
-          - AtributeName: "id"
+          - 
+            AttributeName: "id"
             KeyType: "HASH"
         ProvisionedThroughput:
-          ReadCapasityUnits: 1
-          WriteCapasityUnits: 1
-          TableName: ${self:customs.settings.POSTS_TABLE}
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.settings.POSTS_TABLE}
