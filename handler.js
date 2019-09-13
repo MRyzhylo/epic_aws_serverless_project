@@ -13,6 +13,12 @@ function responce (statusCode, message) {
   }
 }
 
+function sortByDate (a,b) {
+  if(a.createdAt > b.createdAt) {
+    return -1;
+  } else return 1;
+}
+
 module.exports.createPost = (event, context, callback) => {
   const reqBody = JSON.parse(event.body);
 
@@ -28,5 +34,13 @@ module.exports.createPost = (event, context, callback) => {
     Item: post
   }).promise().then(() => {
     callback(null, responce(201,post))
+  }).catch(err => responce(null, responce(err.statusCode, err)))
+}
+
+module.exports.getAllPosts = (event, context, callback) => {
+  return db.scan({
+    TadleName: postsTable
+  }).promise().then(res => {
+    callback(null, responce(200, res.Item.sort(sortByDate)))
   }).catch(err => responce(null, responce(err.statusCode, err)))
 }
