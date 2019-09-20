@@ -1,21 +1,46 @@
 'use strict';
 
-const doc = require('dynamodb-doc');
-let dynamo = new doc.DynamoDB();
+const AWS = require('aws-sdk');
+const db = AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10"});
+const uuid = require('uuid');
 
-module.exports.hello = async event => {
+const postsTable = process.env.POSTS_TABLE;
+
+function responce (statusCode, message) {
   return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
+    statusCode: statusCode,
+    body: JSON.stringify(message)
+  }
+}
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+function sortByDate (a,b) {
+  if(a.createdAt > b.createdAt) {
+    return -1;
+  } else return 1;
+}
+
+module.exports.createPost = (event, context, callback) => {
+  const reqBody = JSON.parse(event.body);
+
+  const post = {
+    id: uuid(),
+    createdAt: new Date(),
+    userId: 1,
+    title: reqBoby.title,
+    body: reqBody.body
+  }
+  return db.put({
+    TadleName: postsTable,
+    Item: post
+  }).promise().then(() => {
+    callback(null, responce(201,post))
+  }).catch(err => responce(null, responce(err.statusCode, err)))
+}
+
+module.exports.getAllPosts = (event, context, callback) => {
+  return db.scan({
+    TadleName: postsTable
+  }).promise().then(res => {
+    callback(null, responce(200, res.Item.sort(sortByDate)))
+  }).catch(err => responce(null, responce(err.statusCode, err)))
+}
