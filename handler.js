@@ -41,7 +41,7 @@ module.exports.createPost = (event, context, callback) => {
     })
     .catch((err) => response(null, response(err.statusCode, err)));
 };
-// Get all posts
+
 module.exports.getAllPosts = (event, context, callback) => {
   return db
     .scan({
